@@ -1,0 +1,394 @@
+
+<!-- Code adapted from
+https://observablehq.com/@d3/Fradial-tidy-tree
+https://javadude.wordpress.com/2012/06/20/d3-js-from-tree-to-cluster-and-radial-projection/
+https://stackoverflow.com/questions/59783070/d3-v5-radial-tree-cluster
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>D3.js Radial Tree Example</title>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+        <style>
+          h1 {
+            text-align: center;
+            font-family: "Roboto";
+            font-weight: normal;
+
+          }
+          p {
+            font-family: "Roboto"
+          }
+           .list {
+            text-align: center;
+          }
+      //      svg {
+              border: solid 1px #ccc;
+            }
+            .link {
+                fill: none;
+                stroke: #ccc;
+                stroke-width: 1.5px;
+            }
+
+            div {
+              margin-left: 100px;
+              margin-right: 100px;
+            }
+        </style>
+    </head>
+    <body>
+
+<h1>CFI Technical Subject Areas</h1>
+<div><p>The path to becoming a flight instructor initially seems bewildering. Where do you even begin? I found myself slightly paralyzed at the quantum leap required to go from executing instructions given by all-knowing CFIs to giving them myself to students. When I realized that the CFI PTS was, quite conveniently, laid out as a kind of curriculum and map of this journey, that paralysis subsided, and I took a small step forward, beginning with the first element of the first subject in the PTS: how to get a medical certificate. And having made this somewhat obvious discovery, I began to think of how that enormous body of knowledge might be better organized, be made more amenable to memorization, so that teaching a lesson could seem organic and spontaneous, rather than the dry, dreary recitation of a PowerPoint slide. The solution soon emerged: aviation has no shortage of acronyms, but there were none for the thirteen technical subject areas that form the core of the CFI single-engine-land check ride. After creating an acronym for aeromedical factors (HHMS-MCFADS), I decided to create ones for the remaining subjects, so that the entire curriculum could be taken in at a glance, a turbocharged ATOMATOFLAMES for the aspiring CFI candidate. These acronyms are listed below and represented visually in the tree radial diagram, with the elements representing the leaves and the subjects the branches. The acronyms are in some cases nonsensical, but they&apos;ve proven useful to me, and I hope they are to anyone else contemplating the daunting but rewarding journey to becoming a flight instructor. </p>
+<p class="list">Aeromedical Factors: <strong>HHMS-MCFADS</strong> (think her majesty&apos;s ship McFads) <br>
+  Runway Incursion Avoidance: <strong>CASH-SWAB-PIP-TANNEL</strong> <br>
+  Visual Scanning and Collision Avoidance: <strong>PER-BASICC</strong> <br>
+  Principles of Flight: <strong>AATLW </strong>(think "At last we meet...") <br>
+  Weight and Balance: <strong>TECC </strong><br>
+  Flight Controls: <strong>PST</strong> <br>
+  Flight Planning and Navigation: <strong>TACC-DR-ALFF-LGP</strong> (think Alf the puppet as a doctor, then Let's Go Plan!) <br>
+  Night Operations: <strong>VIA-PETT-OF-E-TAG</strong> <br>
+  High Altitude Operations: <strong>RP-SAC-PD</strong> <br>
+  CFR 14 Flight Publications: <strong>C-FAT-PM</strong> <br>
+  National Airspace System: <strong>WAST</strong> <br>
+  Navigation Systems and Radar Services: <strong>GGRS </strong><br>
+  Logbook Entries and Certificate Endorsements: <strong>LETTR</strong></p></div>
+
+
+<script type="text/javascript">
+
+    let root = {"name" : "Technical Subject Areas", "info" : "tst", "children" : [
+                        {"name" : "Aeromedical", "children" : [
+                          {"name": "HHMSMCFADS", "children": [
+                            {"name" : "How to get medical" },
+                            {"name" : "Hypoxia" },
+                            {"name" : "Hyperventilation" },
+                            {"name" : "Motion sickness" },
+                            {"name" : "Spatial Disorientation" },
+                            {"name" : "Middle ear and sinus problems" },
+                            {"name" : "Carbon monoxide poisoning" },
+                            {"name" : "Fatigue and stress" },
+                            {"name" : "Alcohol and drugs" },
+                            {"name" : "Dehydration" },
+                            {"name" : "Scuba diving" }
+                        ]}]},
+
+                        {"name" : "Runway Incursions", "children" : [
+                          {"name": "CASHSWABPIPTANNEL", "children": [
+                            {"name" : "Challenges" },
+                            {"name" : "Appropriate actions"},
+                            {"name" : "Steering and maneuvering" },
+                            {"name" : "Hold lines" },
+                            {"name" : "Sterile cockpit" },
+                            {"name" : "Workload reduction" },
+                            {"name" : "Airport diagram and planning" },
+                            {"name" : "Bias expectations in comms" },
+                            {"name" : "Planes in runway SA" },
+                            {"name" : "Intersecting runways" },
+                            {"name" : "Parallel runways" },
+                            {"name" : "Towered operations" },
+                            {"name" : "Actions by pilot from TO to landing" },
+                            {"name" : "Nontowered airport ops" },
+                            {"name" : "Night operations" },
+                            {"name" : "Exterior lights" },
+                            {"name" : "Low-vis operations" }
+                        ]}]},
+
+
+                        {"name" : "Visual Scanning", "children": [
+                          {"name": "PERBASICC", "children": [
+                                {"name" : "Physical factors"},
+                                {"name" : "Environmental factors" },
+                                {"name" : "Regulations (91.113)" },
+                                {"name" : "Blind spots" },
+                                {"name" : "Airspace" },
+                                {"name" : "Scanning techniques" },
+                                {"name" : "Speed and collisions" },
+                                {"name" : "Illusions" },
+                                {"name" : "Clearing turns" },
+                                {"name" : "Cockpit management" }]}]
+
+                              },
+
+                          {"name" : "Principles of Flight", "children": [
+                            {"name": "AATLW", "children": [
+                                {"name" : "Airfoil design"},
+                                {"name" : "Airplane stability" },
+                                {"name" : "Turning tendencies" },
+                                {"name" : "Load factor" },
+                                {"name" : "Wingtip vortices and wake turbulence" }]}]
+
+
+                              },
+
+                          {"name": "Weight and Balance", "children": [
+                            {"name": "TECC", "children": [
+                              {"name": "Terms"},
+                              {"name": "Effects of CG"},
+                              {"name": "Calculating W & B"},
+                              {"name": "Changes & shifts in W & B"}]}]
+
+
+
+
+
+
+                        },
+
+                          {"name" : "Flight Controls", "children": [
+                            {"name": "PST", "children": [
+                                      {"name" : "Primary"},
+                                      {"name" : "Secondary" },
+                                      {"name" : "Trim" }]}]
+
+                                    },
+                          {"name" : "Flight PLanning", "children": [
+                            {"name": "TACCDRALFLGP", "children": [
+                                      {"name" : "Terms"},
+                                      {"name" : "Aeronautical charts" },
+                                      {"name" : "Currency of charts" },
+                                      {"name" : "Course plotting" },
+                                      {"name" : "Dead recoking and pilotage" },
+                                      {"name" : "Radio Navigation" },
+                                      {"name" : "Alternate diversions" },
+                                      {"name" : "Lost procedures" },
+                                      {"name" : "Fuel calculations" },
+                                      {"name" : "Log (flight)" },
+                                      {"name" : "Go/no-go decision"},
+                                      {"name" : "Plan (opening and closing)"}]}]
+
+
+
+                                    },
+
+                          {"name" : "Night Operations", "children": [
+                            {"name": "VIAPETTOFETAG", "children": [
+                                      {"name" : "Vision"},
+                                      {"name" : "Illusions" },
+                                      {"name" : "Adjustment of interior lights" },
+                                      {"name" : "Preflight" },
+                                      {"name" : "Engine starting" },
+                                      {"name" : "Taxiing" },
+                                      {"name" : "Takeoff and climbout" },
+                                      {"name" : "Orientation in flight" },
+                                      {"name" : "Flight instruments" },
+                                      {"name" : "Emergencies" },
+                                      {"name" : "Traffic patterns"},
+                                      {"name" : "Approaches"},
+                                      {"name" : "Go-arounds"}]}]
+
+
+
+                                              },
+
+                          {"name" : "High Altitude Operations", "children": [
+                            {"name": "RPSACPD", "children": [
+                                      {"name" : "Regulations (91.211)"},
+                                      {"name" : "Physiological hazards" },
+                                      {"name" : "Supplemental oxygen" },
+                                      {"name" : "Aviatior oxygen" },
+                                      {"name" : "Care and storage" },
+                                      {"name" : "Pressurization" },
+                                      {"name" : "Decompression" }]}]
+
+
+                                    },
+                          {"name" : "CFR 14 and Publications", "children": [
+                            {"name": "CFATPM", "children": [
+                                      {"name" : "CFR parts 1, 61, 91, NTSB 830"},
+                                      {"name" : "Flight information publications" },
+                                      {"name" : "Advisory circulars" },
+                                      {"name" : "Test standards" },
+                                      {"name" : "POHs" },
+                                      {"name" : "Manuals (approved)" }]}]
+
+
+
+                                    },
+
+                                    {"name" : "Airspace", "children": [
+                                      {"name": "WAST", "children": [
+                                                {"name" : "Weather minimums (VFR)"},
+                                                {"name" : "Airspace" },
+                                                {"name" : "Special use airspace"},
+                                                {"name" : "TFRs" }]}]
+
+
+                                              },
+
+                        {"name" : "Nav and Radar Services", "children": [
+                                {"name" : "GRRS", "children": [
+                                    {"name" : "Ground-based system"},
+                                    {"name" : "GPS" },
+                                    {"name" : "Radar services" },
+                                    {"name" : "Satellite-based system" }
+                                ] }
+
+
+                                                                        ]
+
+                                  },
+
+                        {"name" : "Endorsements", "children": [
+                        {"name" : "LETTR", "children": [
+                                    {"name" : "Logbook entries for instruction"},
+                                    {"name" : "Endorsements for student pilots" },
+                                    {"name" : "Test prep and entries" },
+                                    {"name" : "Review endorsement (61.56)" },
+                                    {"name" : "Records required" }
+                                  ]}]
+
+
+
+                                },
+
+
+
+
+
+
+
+                    ]};
+
+  let rootTwo = {"name": "Preflight Preparation", "info": "tst,", "children": [
+                    {"name": "Certifcates and Documents", "children": [
+                        {"name": "TP-MRE", "children": [
+                            {"name": "Training requirements"},
+                            {"name": "Privileges and Limitations"},
+                            {"name": "Medical certificates"},
+                            {"name": "Recent flight experience"},
+                            {"name": "Entries (logbook)"}]}]
+
+                            },
+
+                    {"name": "Weather Information", "children": [
+                      {"name": "SPAR-HG", "children": [
+                        {"name": "Sources of weather info"},
+                        {"name": "Preflight briefing"},
+                        {"name": "Advisories in flight"},
+                        {"name": "Real-time weather"},
+                        {"name": "Hazards (wind shear)"},
+                        {"name": "Go/no-go factors"}
+                      ]}
+                    ]
+
+                  },
+                  {"name":"Operation of Systems", "children": [
+                    {"name": "FTP-LEAPED", "children": [
+                      {"name": "Fuel"},
+                      {"name": "Trim"},
+                      {"name": "Primary and secondary controls"},
+                      {"name": "Powerplant and propeller"},
+                      {"name": "Landing gear"},
+                      {"name": "Electrical"},
+                      {"name": "Avionics"},
+                      {"name": "Pitot-static"},
+                      {"name": "Environmental"},
+                      {"name": "De-icing"}
+
+                    ]}
+                  ]},
+
+                  {"name":"Performance and Limitations", "children": [
+                    {"name": "WEACC", "children": [
+                      {"name": "Weight and balance"},
+                      {"name": "Effects of exceeding"},
+                      {"name": "Atmospheric conditions"},
+                      {"name": "Charts and tables"},
+                      {"name": "Capabilities/factors"}
+
+
+                    ]}
+                  ]},
+
+                  {"name":"Airworthiness", "children": [
+                    {"name": "AM-SAD", "children": [
+                      {"name": "ATOMATOFLAMES (VFR)"},
+                      {"name": "MEL inop procedures"},
+                      {"name": "Special flight permit"},
+                      {"name": "ADs"},
+                      {"name": "Deferring maintenance (no MEL)"}
+
+
+                    ]}
+                  ]},
+
+                  {"name":"Preflight Maneuver", "children": [
+                    {"name": "PDAC", "children": [
+                      {"name": "Purpose"},
+                      {"name": "Description"},
+                      {"name": "Aids"},
+                      {"name": "Common errors"}
+
+
+
+                    ]}
+                  ]}
+
+
+  ]};
+
+let createRadialTree = function (input) {
+    let height = 1400;
+    let width = 1500;
+
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let diameter = height * 0.75;
+    let radius = diameter / 2;
+
+    let tree = d3.tree()
+        .size([2*Math.PI, radius])
+        .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
+
+    let data = d3.hierarchy(input)
+
+    let treeData = tree(data);
+
+    let nodes = treeData.descendants();
+    let links = treeData.links();
+
+    let graphGroup = svg.append('g')
+        .attr('transform', "translate("+(width/2)+","+(height/2)+")");
+
+    graphGroup.selectAll(".link")
+        .data(links)
+        .join("path")
+        .attr("class", "link")
+        .attr("d", d3.linkRadial()
+            .angle(d => d.x)
+            .radius(d => d.y));
+
+    let node = graphGroup
+        .selectAll(".node")
+        .data(nodes)
+        .join("g")
+        .attr("class", "node")
+        .attr("transform", function(d){
+            return `rotate(${d.x * 180 / Math.PI - 90})` + `translate(${d.y}, 0)`;
+        });
+
+
+    node.append("circle").attr("r", function(d) {return d.children ? 4 : 2;});
+
+    node.append("text")
+        .attr("font-family", "Roboto")
+        .attr("font-size", function (d) {return d.children ? 15 : 12; })
+        .attr("dx", function(d) { return d.x < Math.PI ? 8 : -8; })
+        .attr("dy", ".31em")
+        .attr("text-anchor", function(d) { return d.x < Math.PI ? "start" : "end"; })
+        .attr("transform", function(d) { return d.x < Math.PI ? null : "rotate(180)"; })
+
+        .text(function(d) { return d.data.name; });
+};
+
+createRadialTree(root);
+createRadialTree(rootTwo);
+</script>
+</body>
+</html>
